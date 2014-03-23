@@ -1,9 +1,12 @@
 var gpio = require("gpio");
+var pin_number = 4;
 
-var gpio4 = gpio.export(4, {
-   direction: 'out',
-   interval: 200,
-   ready: function() {
-     gpio4.set();
-   }
+var pin = gpio.export(pin_number, {
+  direction: 'out',
+  interval: 200,
+  ready: function() {
+    setTimeout(function() {
+      pin.set();
+    }, 1000);
+  }
 });
