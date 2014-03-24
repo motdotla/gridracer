@@ -17,7 +17,8 @@ var port        = parseInt(process.env.PORT) || 3000;
 var Hapi        = require('hapi');
 server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
 
-var resetAndUnexport = function(pin, callback) {
+
+var resetAndUnexportPin = function(pin, callback) {
   setTimeout(function() {
     pin.removeAllListeners('change');
     pin.reset();
@@ -33,17 +34,9 @@ var directions = {
       var payload   = request.payload;
       console.log(payload);
 
-      forward = gpio.export(FORWARD_PIN, {
-        direction: 'out',
-        interval: 200,
-        ready: function() {
-          setTimeout(function() {
-            forward.set();
-            resetAndUnexport(pin, function() {
-              request.reply({success: true});
-            });
-          }, COMMAND_TIMEOUT);
-        }
+      forward.set();
+      resetAndUnexportPin(forward, function() {
+        request.reply({success: true});
       });
     }
   }
@@ -55,6 +48,16 @@ server.route({
   config  : directions.forward
 });
 
-server.start(function() {
-  console.log('Server started at: ' + server.info.uri);
+forward = gpio.export(FORWARD_PIN, {
+  direction: 'out',
+  interval: 200,
+  ready: function() {
+    console.log("Pin "+FORWARD_PIN+" ready");
+
+    server.start(function() {
+      console.log('Server started at: ' + server.info.uri);
+    });  
+  }
 });
+
+
