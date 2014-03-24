@@ -11,28 +11,18 @@ var LEFT_PIN        = 23;
 var DEFAULT_TIMEOUT = 500;
 var COMMAND_TIMEOUT = 300;
 
-var commands        = {};
-commands['forward'] = undefined;
-commands['left']    = undefined;
-var forward, left;
+var commands          = {
+  forward: undefined, 
+  left: undefined
+};
 var commands_metadata = [
-  {name: 'forward', pin: FORWARD_PIN}
-  //{variable: left, pin: 23}
+  {name: 'forward', pin: FORWARD_PIN},
+  {name: 'left', pin: LEFT_PIN}
 ];
 
 var port        = parseInt(process.env.PORT) || 3000;
 var Hapi        = require('hapi');
 server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
-
-//var resetAndUnexportPin = function(pin, callback) {
-//  setTimeout(function() {
-//    pin.removeAllListeners('change');
-//    pin.reset();
-//    pin.unexport(function() {
-//      callback();
-//    });
-//  }, DEFAULT_TIMEOUT);
-//};
 
 var firePin = function(pin, callback) {
   pin.set();
