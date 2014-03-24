@@ -48,7 +48,7 @@ var directions = {
       var payload   = request.payload;
       console.log(payload);
 
-      firePin(command['forward'], function() {
+      firePin(commands['forward'], function() {
         request.reply({success: true});
       });
     }
