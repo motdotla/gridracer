@@ -15,9 +15,17 @@ var commands          = {
   forward: undefined, 
   left: undefined
 };
-var commands_metadata = [
-  {name: 'forward', pin: FORWARD_PIN},
-  {name: 'left', pin: LEFT_PIN}
+var routes_info = [
+  {
+    name: 'forward', 
+    simultaneous_commands: 'forward',
+    pin: FORWARD_PIN
+  },
+  {
+    name: 'left',
+    simultaneous_commands: 'forward,left',
+    pin: LEFT_PIN
+  }
 ];
 
 var port        = parseInt(process.env.PORT) || 3000;
@@ -34,24 +42,24 @@ var firePins = function(pins, callback) {
   });
 };
 
-commands_metadata.forEach(function(command_metadata) {
-  commands[command_metadata.name] = gpio.export(command_metadata.pin, {
+routes_info.forEach(function(route_info) {
+  commands[route_info.name] = gpio.export(route_info.pin, {
     direction: 'out',
     interval: 200,
     ready: function() {
-      console.log("Pin "+command_metadata.pin+" ready");
+      console.log("Pin "+route_info.pin+" ready");
     }
  });
 
  server.route({
    method : '*',
-   path   : '/'+command_metadata.name,
+   path   : '/'+route_info.name,
    config : {
      handler : function(request) {
       var payload   = request.payload;
       console.log(payload);
 
-      var pin = commands[command_metadata.name];
+      var pin = commands[route_info.name];
 
       firePins([pin], function() {
         request.reply({success: true});
