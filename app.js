@@ -59,9 +59,13 @@ routes_info.forEach(function(route_info) {
       var payload   = request.payload;
       console.log(payload);
 
-      var pin = commands[route_info.name];
+      var command_name_strings = route_info.simultaneous_commands.split(",");
+      var pins = [];
+      command_name_strings.forEach(function(name) {
+        pins.push(commands[name]);
+      });
 
-      firePins([pin], function() {
+      firePins(pins, function() {
         request.reply({success: true});
       });
      }
