@@ -1,25 +1,27 @@
 var gpio = require("gpio");
-var forward_pin     = 18;
-var left_pin        = 23;
-var default_timeout = 1000;
-var command_timeout = 300;
-var forward;
+var FORWARD_PIN     = 18;
+var LEFT_PIN        = 23;
+var DEFAULT_TIMEOUT = 1000;
+var COMMAND_TIMEOUT = 300;
 
-forward = gpio.export(forward_pin, {
+var forward;
+var left;
+
+forward = gpio.export(FORWARD_PIN, {
   direction: 'out',
   ready: function() {
     setTimeout(function() {
       forward.set();
-    }, command_timeout);
+    }, COMMAND_TIMEOUT);
   }
 });
 
-//var left = gpio.export(left_pin, {
+//var left = gpio.export(LEFT_PIN, {
 //  direction: 'out',
 //  ready: function() {
 //    setTimeout(function() {
 //      left.set();
-//    }, command_timeout);
+//    }, COMMAND_TIMEOUT);
 //  }
 //});
 
@@ -34,4 +36,4 @@ setTimeout(function() {
       process.exit();
     });
   });
-}, default_timeout);
+}, DEFAULT_TIMEOUT);
