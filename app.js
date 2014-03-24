@@ -24,25 +24,14 @@ var port        = parseInt(process.env.PORT) || 3000;
 var Hapi        = require('hapi');
 server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
 
-var firePin = function(pin, callback) {
-  pin.set();
-  setTimeout(function() {
-    pin.reset();
-    callback();
-  }, DEFAULT_TIMEOUT);
-};
-
-var directions = {
-  forward: {
-    handler: function (request) {
-      var payload   = request.payload;
-      console.log(payload);
-
-      firePin(commands['forward'], function() {
-        request.reply({success: true});
-      });
-    }
-  }
+var firePins = function(pins, callback) {
+  pins.forEach(function(pin) {
+    pin.set();
+    setTimeout(function() {
+      pin.reset();
+      callback();
+    }, DEFAULT_TIMEOUT);
+  });
 };
 
 commands_metadata.forEach(function(command_metadata) {
@@ -62,7 +51,9 @@ commands_metadata.forEach(function(command_metadata) {
       var payload   = request.payload;
       console.log(payload);
 
-      firePin(commands[command_metadata.name], function() {
+      var pin = commands[command_metadata.name];
+
+      firePins([pin], function() {
         request.reply({success: true});
       });
      }
@@ -73,5 +64,3 @@ commands_metadata.forEach(function(command_metadata) {
 server.start(function() {
   console.log('Server started at: ' + server.info.uri);
 });  
-
-
