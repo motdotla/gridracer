@@ -57,7 +57,16 @@ commands_metadata.forEach(function(command_metadata) {
  server.route({
    method : '*',
    path   : '/'+command_metadata.name,
-   config : directions.forward
+   config : {
+     handler : function(request) {
+      var payload   = request.payload;
+      console.log(payload);
+
+      firePin(commands[command_metadata.name], function() {
+        request.reply({success: true});
+      });
+     }
+   }
  });
 });
 
