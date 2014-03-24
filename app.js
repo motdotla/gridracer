@@ -56,7 +56,7 @@ commands_metadata.forEach(function(command_metadata) {
 
  server.route({
    method : 'GET'
-   path   : '/forward',
+   path   : '/'+command_metadata.name,
    config : directions.forward
  });
 });
