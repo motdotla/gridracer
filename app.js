@@ -29,9 +29,10 @@ var resetAndUnexportPin = function(pin, callback) {
 
 var firePin = function(pin, callback) {
   pin.set();
-  resetAndUnexportPin(pin, function() {
+  setTimeout(function() {
+    pin.reset();
     callback();
-  });
+  }, DEFAULT_TIMEOUT);
 };
 
 var directions = {
