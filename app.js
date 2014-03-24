@@ -11,9 +11,12 @@ var LEFT_PIN        = 23;
 var DEFAULT_TIMEOUT = 500;
 var COMMAND_TIMEOUT = 300;
 
+var commands        = {};
+commands['forward'] = undefined;
+commands['left']    = undefined;
 var forward, left;
-var commands = [
-  {variable: forward, pin: 18}
+var commands_metadata = [
+  {variable: commands['forward'], pin: FORWARD_PIN}
   //{variable: left, pin: 23}
 ];
 
@@ -45,7 +48,7 @@ var directions = {
       var payload   = request.payload;
       console.log(payload);
 
-      firePin(forward, function() {
+      firePin(command['forward'], function() {
         request.reply({success: true});
       });
     }
@@ -58,12 +61,12 @@ server.route({
   config  : directions.forward
 });
 
-commands.forEach(function(command) {
-  command.variable = gpio.export(command.pin, {
+commands_metadata.forEach(function(command_metadata) {
+  commands[command_metadata.variable] = gpio.export(command_metadata.pin, {
     direction: 'out',
     interval: 200,
     ready: function() {
-      console.log("Pin "+command.pin+" ready");
+      console.log("Pin "+command_metadata.pin+" ready");
     }
  });
 });
