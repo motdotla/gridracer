@@ -51,6 +51,9 @@ routes_info.forEach(function(route_info) {
     direction: 'out',
     interval: 200,
     ready: function() {
+      var pin = commands[route_info.name];
+      firePins([pin]);
+
       console.log("Pin "+route_info.pin+" ready");
     }
  });
