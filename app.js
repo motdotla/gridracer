@@ -16,7 +16,7 @@ commands['forward'] = undefined;
 commands['left']    = undefined;
 var forward, left;
 var commands_metadata = [
-  {variable: commands['forward'], pin: FORWARD_PIN}
+  {name: 'forward', pin: FORWARD_PIN}
   //{variable: left, pin: 23}
 ];
 
@@ -62,7 +62,7 @@ server.route({
 });
 
 commands_metadata.forEach(function(command_metadata) {
-  commands[command_metadata.variable] = gpio.export(command_metadata.pin, {
+  commands[command_metadata.name] = gpio.export(command_metadata.pin, {
     direction: 'out',
     interval: 200,
     ready: function() {
