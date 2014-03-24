@@ -1,7 +1,17 @@
 {
   "name": "gridracer",
   "version": "0.0.1",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "main": "app.js",
+  "description": "",
   "dependencies": {
-    "gpio": "*"
+    "dotenv": "0.2.5",
+    "hapi": "1.6.2",
+    "gpio": "*",
+    "request": "2.21.0",
+    "sendgrid": "1.0.2"
   }
 }
