@@ -22,7 +22,7 @@ var left = gpio.export(left_pin, {
   }
 });
 
-var commands = [foward, left];
+var commands = [forward, left];
 
 setTimeout(function() {
   commands.forEach(function(command) {
