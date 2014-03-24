@@ -45,12 +45,6 @@ var directions = {
   }
 };
 
-server.route({
-  method  : 'GET',
-  path    : '/forward',
-  config  : directions.forward
-});
-
 commands_metadata.forEach(function(command_metadata) {
   commands[command_metadata.name] = gpio.export(command_metadata.pin, {
     direction: 'out',
@@ -58,6 +52,12 @@ commands_metadata.forEach(function(command_metadata) {
     ready: function() {
       console.log("Pin "+command_metadata.pin+" ready");
     }
+ });
+
+ server.route({
+   method : 'GET'
+   path   : '/forward',
+   config : directions.forward
  });
 });
 
