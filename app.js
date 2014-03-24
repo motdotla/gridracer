@@ -35,11 +35,15 @@ server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
 var firePins = function(pins, callback) {
   pins.forEach(function(pin) {
     pin.set();
-    setTimeout(function() {
-      pin.reset();
-      callback();
-    }, DEFAULT_TIMEOUT);
   });
+
+  setTimeout(function() {
+    pins.forEach(function(pin) {
+      pin.reset();
+    });
+
+    callback();
+  }, DEFAULT_TIMEOUT);
 };
 
 routes_info.forEach(function(route_info) {
