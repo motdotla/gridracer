@@ -1,7 +1,7 @@
 var gpio = require("gpio");
 var FORWARD_PIN     = 18;
 var LEFT_PIN        = 23;
-var DEFAULT_TIMEOUT = 1000;
+var DEFAULT_TIMEOUT = 700;
 var COMMAND_TIMEOUT = 300;
 
 var forward;
