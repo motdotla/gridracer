@@ -8,7 +8,7 @@ var e               = module.exports;
 e.ENV               = process.env.NODE_ENV || 'development';
 var FORWARD_PIN     = 18;
 var LEFT_PIN        = 23;
-var DEFAULT_TIMEOUT = 100;
+var DEFAULT_TIMEOUT = 500;
 var COMMAND_TIMEOUT = 300;
 var forward;
 var left;
@@ -16,6 +16,16 @@ var left;
 var port        = parseInt(process.env.PORT) || 3000;
 var Hapi        = require('hapi');
 server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
+
+var resetAndUnexport = function(pin, callback) {
+  setTimeout(function() {
+    pin.removeAllListeners('change');
+    pin.reset();
+    pin.unexport(function() {
+      callback();
+    });
+  }, DEFAULT_TIMEOUT);
+};
 
 var directions = {
   forward: {
@@ -29,14 +39,9 @@ var directions = {
         ready: function() {
           setTimeout(function() {
             forward.set();
-            setTimeout(function() {
-              forward.removeAllListeners('change');
-              forward.reset();
-              forward.unexport();
-              forward.unexport(function() {
-                request.reply({success: true});
-              });
-            }, DEFAULT_TIMEOUT);
+            resetAndUnexport(pin, function() {
+              request.reply({success: true});
+            });
           }, COMMAND_TIMEOUT);
         }
       });
