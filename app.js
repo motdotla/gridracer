@@ -25,6 +25,7 @@ var directions = {
 
       forward = gpio.export(FORWARD_PIN, {
         direction: 'out',
+        interval: 200,
         ready: function() {
           setTimeout(function() {
             forward.set();
