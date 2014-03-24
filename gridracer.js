@@ -3,8 +3,9 @@ var forward_pin     = 18;
 var left_pin        = 23;
 var default_timeout = 1000;
 var command_timeout = 300;
+var forward;
 
-var forward = gpio.export(forward_pin, {
+forward = gpio.export(forward_pin, {
   direction: 'out',
   ready: function() {
     setTimeout(function() {
