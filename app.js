@@ -8,7 +8,7 @@ var e               = module.exports;
 e.ENV               = process.env.NODE_ENV || 'development';
 var FORWARD_PIN     = 18;
 var LEFT_PIN        = 23;
-var DEFAULT_TIMEOUT = 500;
+var DEFAULT_TIMEOUT = 800;
 var COMMAND_TIMEOUT = 300;
 
 var commands          = {
