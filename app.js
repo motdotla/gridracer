@@ -17,7 +17,6 @@ var port        = parseInt(process.env.PORT) || 3000;
 var Hapi        = require('hapi');
 server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
 
-
 var resetAndUnexportPin = function(pin, callback) {
   setTimeout(function() {
     pin.removeAllListeners('change');
@@ -28,14 +27,20 @@ var resetAndUnexportPin = function(pin, callback) {
   }, DEFAULT_TIMEOUT);
 };
 
+var firePin = function(pin, callback) {
+  pin.set();
+  resetAndUnexportPin(pin, function() {
+    callback();
+  });
+};
+
 var directions = {
   forward: {
     handler: function (request) {
       var payload   = request.payload;
       console.log(payload);
 
-      forward.set();
-      resetAndUnexportPin(forward, function() {
+      firePin(forward, function() {
         request.reply({success: true});
       });
     }
