@@ -77,6 +77,19 @@ routes_info.forEach(function(route_info) {
  });
 });
 
+server.route({
+  method: "*",
+  path: "/inbound",
+  config: {
+    handler: function(request) {
+      var payload = request.payload;
+      console.log(payload);
+
+      request.reply({success: true});
+    }
+  }
+});
+
 server.start(function() {
   console.log('Server started at: ' + server.info.uri);
 });  
