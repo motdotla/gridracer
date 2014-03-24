@@ -29,7 +29,8 @@ setTimeout(function() {
     command.removeAllListeners('change');
     command.reset();
     command.unexport();
+    command.unexport(function() {
+      process.exit();
+    });
   });
-  
-  process.exit();
 }, default_timeout);
