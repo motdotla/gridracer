@@ -13,16 +13,16 @@ var forward = gpio.export(forward_pin, {
   }
 });
 
-var left = gpio.export(left_pin, {
-  direction: 'out',
-  ready: function() {
-    setTimeout(function() {
-      left.set();
-    }, command_timeout);
-  }
-});
+//var left = gpio.export(left_pin, {
+//  direction: 'out',
+//  ready: function() {
+//    setTimeout(function() {
+//      left.set();
+//    }, command_timeout);
+//  }
+//});
 
-var commands = [forward, left];
+var commands = [forward];
 
 setTimeout(function() {
   commands.forEach(function(command) {
