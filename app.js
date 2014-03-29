@@ -7,7 +7,6 @@ var gpio        = require("gpio");
 var e               = module.exports;
 e.ENV               = process.env.NODE_ENV || 'development';
 var FORWARD_PIN     = 18;
-var REVERSE_PIN     = 23;
 var DEFAULT_TIMEOUT = 800;
 var COMMAND_TIMEOUT = 300;
 
@@ -23,25 +22,10 @@ var forwardPin = gpio.export(FORWARD_PIN, {
   }
 });
 
-var reversePin = gpio.export(REVERSE_PIN, {
-  direction: 'out',
-  interval: 200,
-  ready: function() {
-    console.log("Pin "+REVERSE_PIN+" ready");
-  }
-});
-   
 var forward = function () {
   forwardPin.set();
   setTimeout(function() {
     forwardPin.reset();
-  }, DEFAULT_TIMEOUT);
-};
-
-var reverse = function () {
-  reversePin.set();
-  setTimeout(function() {
-    reversePin.reset();
   }, DEFAULT_TIMEOUT);
 };
 
@@ -58,17 +42,6 @@ server.route({
 
 server.route({
   method: "*",
-  path: "/r",
-  config: {
-    handler: function(request) {
-      reverse();
-      request.reply({success: true});
-    }
-  }
-});
-
-server.route({
-  method: "*",
   path: "/inbound",
   config: {
     handler: function(request) {
@@ -78,9 +51,6 @@ server.route({
 
       if (subject === 'f') {
         forward();
-      }
-      if (subject === 'r') {
-        reverse();
       }
 
       request.reply({success: true});
