@@ -74,10 +74,12 @@ server.route({
     handler: function(request) {
       var payload = request.payload;
       var subject = payload.subject.trim();
-      if (subject == 'f') {
+      console.log(subject);
+
+      if (subject === 'f') {
         forward();
       }
-      if (subject == 'r') {
+      if (subject === 'r') {
         reverse();
       }
 
