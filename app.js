@@ -7,13 +7,13 @@ var gpio        = require("gpio");
 var e               = module.exports;
 e.ENV               = process.env.NODE_ENV || 'development';
 var FORWARD_PIN     = 18;
-var LEFT_PIN        = 23;
+var REVERSE_PIN     = 23;
 var DEFAULT_TIMEOUT = 800;
 var COMMAND_TIMEOUT = 300;
 
 var commands          = {
   forward: undefined, 
-  left: undefined
+  reverse: undefined
 };
 var routes_info = [
   {
@@ -22,9 +22,9 @@ var routes_info = [
     pin: FORWARD_PIN
   },
   {
-    name: 'left',
-    simultaneous_commands: 'forward,left',
-    pin: LEFT_PIN
+    name: 'reverse',
+    simultaneous_commands: 'reverse',
+    pin: REVERSE_PIN
   }
 ];
 
