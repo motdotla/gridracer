@@ -31,14 +31,14 @@ var reversePin = gpio.export(REVERSE_PIN, {
   }
 });
    
-var f = function () {
+var forward = function () {
   forwardPin.set();
   setTimeout(function() {
     forwardPin.reset();
   }, DEFAULT_TIMEOUT);
 };
 
-var r = function () {
+var reverse = function () {
   reversePin.set();
   setTimeout(function() {
     reversePin.reset();
@@ -50,7 +50,7 @@ server.route({
   path: "/f",
   config: {
     handler: function(request) {
-      f();
+      forward();
       request.reply({success: true});
     }
   }
@@ -61,7 +61,7 @@ server.route({
   path: "/r",
   config: {
     handler: function(request) {
-      r();
+      reverse();
       request.reply({success: true});
     }
   }
@@ -74,8 +74,12 @@ server.route({
     handler: function(request) {
       var payload = request.payload;
       var subject = payload.subject.trim();
-      var fn = subject;
-      global[fn]();
+      if (subject == 'f') {
+        forward();
+      }
+      if (subject == 'r') {
+        reverse();
+      }
 
       request.reply({success: true});
     }
