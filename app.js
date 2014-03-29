@@ -64,7 +64,6 @@ routes_info.forEach(function(route_info) {
    config : {
      handler : function(request) {
       var payload   = request.payload;
-      console.log(payload);
 
       var command_name_strings = route_info.simultaneous_commands.split(",");
       var pins = [];
