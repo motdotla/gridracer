@@ -11,72 +11,60 @@ var REVERSE_PIN     = 23;
 var DEFAULT_TIMEOUT = 800;
 var COMMAND_TIMEOUT = 300;
 
-var commands          = {
-  forward: undefined, 
-  reverse: undefined
-};
-var routes_info = [
-  {
-    name: 'forward', 
-    simultaneous_commands: 'forward',
-    pin: FORWARD_PIN
-  },
-  {
-    name: 'reverse',
-    simultaneous_commands: 'reverse',
-    pin: REVERSE_PIN
-  }
-];
-
 var port        = parseInt(process.env.PORT) || 3000;
 var Hapi        = require('hapi');
 server          = new Hapi.Server(+port, '0.0.0.0', { cors: true });
 
-var firePins = function(pins, callback) {
-  pins.forEach(function(pin) {
-    pin.set();
-  });
+var forwardPin = gpio.export(FORWARD_PIN, {
+  direction: 'out',
+  interval: 200,
+  ready: function() {
+    console.log("Pin "+FORWARD_PIN+" ready");
+  }
+});
 
+var reversePin = gpio.export(REVERSE_PIN, {
+  direction: 'out',
+  interval: 200,
+  ready: function() {
+    console.log("Pin "+REVERSE_PIN+" ready");
+  }
+});
+   
+var f = function () {
+  forwardPin.set();
   setTimeout(function() {
-    pins.forEach(function(pin) {
-      pin.reset();
-    });
-
-    callback();
+    forwardPin.reset();
   }, DEFAULT_TIMEOUT);
 };
 
-routes_info.forEach(function(route_info) {
-  commands[route_info.name] = gpio.export(route_info.pin, {
-    direction: 'out',
-    interval: 200,
-    ready: function() {
-      var pin = commands[route_info.name];
-      firePins([pin], function() {
-        console.log("Pin "+route_info.pin+" ready");
-      });
+var r = function () {
+  reversePin.set();
+  setTimeout(function() {
+    reversePin.reset();
+  }, DEFAULT_TIMEOUT);
+};
+
+server.route({
+  method: "*",
+  path: "/f",
+  config: {
+    handler: function(request) {
+      f();
+      request.reply({success: true});
     }
- });
+  }
+});
 
- server.route({
-   method : '*',
-   path   : '/'+route_info.name,
-   config : {
-     handler : function(request) {
-      var payload   = request.payload;
-
-      var command_name_strings = route_info.simultaneous_commands.split(",");
-      var pins = [];
-      command_name_strings.forEach(function(name) {
-        pins.push(commands[name]);
-      });
-
-      firePins(pins, function() {
-        request.reply({success: true});
-      });
-     }
-   }
- });
+server.route({
+  method: "*",
+  path: "/r",
+  config: {
+    handler: function(request) {
+      r();
+      request.reply({success: true});
+    }
+  }
 });
 
 server.route({
@@ -85,7 +73,9 @@ server.route({
   config: {
     handler: function(request) {
       var payload = request.payload;
-      console.log(payload);
+      var subject = payload.subject.trim();
+      var fn = subject;
+      global[fn]();
 
       request.reply({success: true});
     }
