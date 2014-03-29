@@ -11,6 +11,7 @@
     "dotenv": "0.2.5",
     "hapi": "1.6.2",
     "gpio": "*",
+    "onoff": "*",
     "request": "2.21.0",
     "sendgrid": "1.0.2"
   }
