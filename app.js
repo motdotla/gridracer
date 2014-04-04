@@ -73,7 +73,7 @@ server.route({
   config: {
     handler: function(request) {
       var payload = request.payload;
-      var subject = payload.subject.trim();
+      var subject = payload.subject.trim().toLowerCase();
       console.log(subject);
 
       if (subject === 'f') {
