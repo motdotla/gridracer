@@ -79,7 +79,13 @@ server.route({
       if (subject === 'f') {
         forward();
       }
+      if (subject === 'forward') {
+        forward();
+      }
       if (subject === 'r') {
+        reverse();
+      }
+      if (subject === 'reverse') {
         reverse();
       }
 
