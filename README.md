@@ -1,6 +1,6 @@
 # gridracer
 
-Control a RC car using Raspberry Pi and SendGrid.
+ Control a RC car using Raspberry Pi and SendGrid.
 
 ## Guide
 
